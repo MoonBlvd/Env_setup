@@ -50,6 +50,8 @@
 	
 	note: if the installation doesn't work, we can manualy copy the .so files to target directory.
 	
+	install gui:
+	sudo apt-get install spatialite-gui
 	
 	
 #### install ipython
