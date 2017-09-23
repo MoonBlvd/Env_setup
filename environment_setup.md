@@ -1,14 +1,16 @@
 ## Set up a ubuntu 16.04 working environment.
+
+#### update apt-get
+	sudo apt-get update
 #### install zsh:
 	sudo apt-get install zsh
 	sudo apt-get install git-core
 	wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh
 	"Password: chsh: PAM: Authentication failure"
-	chsh -s 'which zsh'
-	* "chsh: which zsh is an invalid shell"
+	chsh -s $(which zsh)
+	"If it doesn't work, check which zsh, then type in chsh and change the directory of the default shell to the output of which zsh"	
 	sudo shutdown -r 0
-
-	* I can run 'zsh' but not oh-my-zsh
+	
 
 #### install pip:
 	sudo apt-get install python-pip
@@ -38,12 +40,17 @@
 	sudo apt-get install zlib1g-dev
 	sudo apt-get install libxml2-dev
 	
+	./configure --enable-freexl=no
 	make -j4 // use 4 cores
 	sudo make install-strip
 	
 	find out the directory of mod_spatialite.so and set the LD_LIBRARY_PATH to it, add following line to ~/.zshrc:
 	
 	export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
+	
+	note: if the installation doesn't work, we can manualy copy the .so files to target directory.
+	
+	
 	
 #### install ipython
 	start a virtualenv by:
