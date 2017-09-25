@@ -65,7 +65,7 @@ install the GPL version from Wheels
 
 	pip install pyqt5
 	
-#### install Docker
+#### install Docker / run Jeremy's POSTGIS Docker 
 To install Docker, refer to: 
 https://docs.docker.com/engine
 /installation/linux/docker-ce/ubuntu/#install-using-the-repository"
@@ -80,14 +80,39 @@ Add group "docker" and add the user account to docker
 Login/ou then check:
 
 	docker run hello-world
-To download and run Jeremy's osm docker, refer to:
-
-	https://bitbucket.org/umich_a2sys/postgis-osm/overview
-To  access and explore the container in bash run:
+To  access and explore a container in bash run:
 
 	docker exec -t -i containername /bin/bash
+To download and run Jeremy's POSTGIS Docker, refer to:
+
+	https://bitbucket.org/umich_a2sys/postgis-osm/overview
+Or directly do this:
+
+	git clone https://BrianYao@bitbucket.org/umich_a2sys/postgis-osm.git
+	cd postgis-osm
+	docker pull jeremybyu/postgis-osm
+	docker run --name osm -d -p 5050:5050 -p 5432:5432 -v ${PWD}:/home/postgis-osm jeremybyu/postgis-osm
+	docker exec -i -t osm bash -c 'cd ${IMPOSM_HOST} && ${IMPOSM_BIN} import -config config.json -read DATAFILENAME.osm.pbf -overwritecache'
+	docker exec -i -t osm bash -c 'cd ${IMPOSM_HOST} && ${IMPOSM_BIN} import -config config.json -write'
+
+To view the database using PgAdmin:
+
+	docker exec -i -t osm bash -c 'python $PGADMIN/pgAdmin4.py'
+To convert PostGIS to Spatialite:
+
+	sudo add-apt-repository ppa:ubuntugis/ppa && sudo apt-get update 
+	sudo apt-get install gdal-bin
+	ogr2ogr -f SQLite -dsco SPATIALITE=yes DB_FILE_NAME.db PG:"dbname=osm user=osm password=osm host='localhost' port='5432'" import.osm_buildings
+	
 #### install sublime3
 	wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
 	echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
 	sudo apt-get update
 	sudo apt-get install sublime-text
+	
+#### install scipy, , matplotlib, pandas and seaborn
+
+	sudo apt-get update
+	sudo apt-get install python-scipy python-pandas python-matplotlib
+	pip insatll seaborn
+	
