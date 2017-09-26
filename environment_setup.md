@@ -67,8 +67,7 @@ install the GPL version from Wheels
 	
 #### install Docker / run Jeremy's POSTGIS Docker 
 To install Docker, refer to: 
-https://docs.docker.com/engine
-/installation/linux/docker-ce/ubuntu/#install-using-the-repository"
+https://docs.docker.com/engine/installation/linux/docker-ce/ubuntu/#install-using-the-repository
 
 To gIve authority to the account, first check the group:
 
@@ -103,6 +102,23 @@ To convert PostGIS to Spatialite:
 	sudo add-apt-repository ppa:ubuntugis/ppa && sudo apt-get update 
 	sudo apt-get install gdal-bin
 	ogr2ogr -f SQLite -dsco SPATIALITE=yes DB_FILE_NAME.db PG:"dbname=osm user=osm password=osm host='localhost' port='5432'" import.osm_buildings
+	
+**One could run imposm in local instead of in the Docker container.** To do this, we should install imposm3:
+
+ Download the latest binary file (unofficial) from: https://imposm.org/static/rel/
+ 
+Extract and copy the ```lib``` folder and the ```imposm3``` file to the working directory.
+
+Then one could run the following command from the terminal to import binary osm data and output spatialite db file:
+
+	./DIR/imposm3 import -config imposm3/config.json -read FILENAME -appendcache
+	./DIR/imposm3 import -config imposm3/config.json -write
+	ogr2ogr -f SQLite -dsco SPATIALITE=yes ../OSM_database/data/USA_osm.db PG:"dbname=osm user=osm password=osm host='localhost' port='5432'" import.osm_roads
+
+	
+
+	
+	
 	
 #### install sublime3
 	wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
