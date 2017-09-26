@@ -113,6 +113,22 @@ To convert PostGIS to Spatialite:
 #### install scipy, , matplotlib, pandas and seaborn
 
 	sudo apt-get update
-	sudo apt-get install python-scipy python-pandas python-matplotlib
-	pip insatll seaborn
+	sudo apt-get install python-scipy python-pandas python-matplotlib python3-tk
+	pip install seaborn
+However, apt-get only installs globally, to install for virtualenv, run: 
+
+	pip install numpy
+	pip install scipy
+	pip install matplotlib
+	pip install pandas
+	pip install seaborn
+	pip install scikit-learn
+#### install Folium, geopandas, psycopg
+Folium is a nice too for geometric plotting 
+
+	pip install folium
+	pip install geopandas
 	
+Psycopg is a PostgreSQL adapter for the Python programming language. It is a wrapper for the libpq, the official PostgreSQL client library.
+
+	pip install psycopg2
