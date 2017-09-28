@@ -148,3 +148,14 @@ Folium is a nice too for geometric plotting
 Psycopg is a PostgreSQL adapter for the Python programming language. It is a wrapper for the libpq, the official PostgreSQL client library.
 
 	pip install psycopg2
+	
+Tips to make Folium better:
+Add more colormaps to the source code of branca:
+
+	python2.7(or3.5)/site-package/branca/colormap.py
+	
+The default logrithm color map in ```branca``` is natural logrithm, we could change it to 10-based logrithm by changeing the following line:
+
+	index = [math.exp(math.log(min_) + i * (math.log(max_) -       math.log(min_)) * 1./n ) for i in range(1+n)]
+	
+	
