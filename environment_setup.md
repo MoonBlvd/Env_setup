@@ -145,11 +145,16 @@ Folium is a nice too for geometric plotting
 	pip install folium
 	pip install geopandas
 	
+*Note*: dependencies will be installed when install geopandas, but there may be ```Python.h``` error. In that case, run:
+
+	sudo apt-get update
+	sudo apt-get install python3-dev
+
 Psycopg is a PostgreSQL adapter for the Python programming language. It is a wrapper for the libpq, the official PostgreSQL client library.
 
 	pip install psycopg2
 	
-Tips to make Folium better:
+#### Branca colormap tips
 Add more colormaps to the source code of branca:
 
 	python2.7(or3.5)/site-package/branca/colormap.py
