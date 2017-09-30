@@ -208,6 +208,9 @@ With tensorflow installed, to install keras is very easy. In the tensorflow virt
 	
 This will automatically install keras with tensorflow backend. More instructions can be seen here: https://keras.io/#installation
 
+*Note: if you have to use CPU instead of cpu, add ```CUDA_VISIBLE_DEVICE=""``` to the beginning of the python 
+cmd*
+
 #### install opencv 3.3.0
 	
 The ```opencv 3.2.0``` had python3 unavailable issue when cmake, thus we install ```opencv 3.3.0```. Please follow the instruction in this link:	
@@ -250,8 +253,14 @@ If opencv is not necessary,  a very simple alternative is imageio. To install, r
 	pip install h5py
 	
 ERROR:
-
+	
+	E tensorflow/stream_executor/cuda/cuda_blas.cc:366] failed to create cublas handle: CUBLAS_STATUS_NOT_INITIALIZED
+	
 	InternalError (see above for traceback): Blas SGEMM launch failed : m=361, n=1024, k=1024
 	
-It might be memory issue, try to use cpu py adding ```CUDA_VISIBLE_DEVICE=""``` to the beginning of the python 
-cmd
+To fix it, add the following lines in the code where keras/tensorflow is called:
+
+	config = tf.ConfigProto()
+	config.gpu_options.allow_growth=True
+	session = tf.Session(config=config)
+	
