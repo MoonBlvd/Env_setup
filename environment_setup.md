@@ -236,4 +236,10 @@ Then make install:
 	sudo ldconfig
 	sudo apt-get update
 	
-Finally, reboot the system.
+Finally, reboot the system and add the path to ```PYTHONPATH```:
+
+	export PYTHONPATH=$WORKON_HOME/tf/lib/python3.5/dist-packages:$PYTHONPATH
+	
+If opencv is not necessary,  a very simple alternative is imageio. To install, run this cmd in the virtualenv:
+
+	pip install imageio 	
