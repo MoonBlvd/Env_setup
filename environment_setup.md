@@ -54,12 +54,12 @@ Install gui:
 
 	sudo apt-get install spatialite-gui
 	
-#### install ipython
+#### install ipython and jupyter-notebook
 Install ipython in an virtualenv:	
 
 	mkvirtualenv py3 --python=python3
 	pip install ipython
-
+	pip install jupyter
 #### install PyQt5
 install the GPL version from Wheels
 
