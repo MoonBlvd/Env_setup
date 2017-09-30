@@ -164,3 +164,76 @@ The default logrithm color map in ```branca``` is natural logrithm, we could cha
 	index = [math.exp(math.log(min_) + i * (math.log(max_) -       math.log(min_)) * 1./n ) for i in range(1+n)]
 	
 	
+#### install CUDA and Tensorflow
+First, start a virtualenv for tensorflow
+
+	mkvirtualenv --python=python3 tf
+Then follow the instruction from: https://developer.nvidia.com/cuda-80-ga2-download-archive
+**Please remember to check the nvidia driver and graphics drive version by:**
+	nvidia-smi
+**Do not install the latest CUDA-9.0 since its not supported by tensorflow yet.**
+
+	sudo dpkg -i cuda-repo-ubuntu1604-8-0-local-ga2_8.0.61-1_amd64.deb
+	sudo apt-get update
+	sudo apt-get install cuda
+	
+If you installed CUDA-9.0 or other CUDA by mistake, remove them by:
+	
+	sudo apt-get --purge remove <package_name>
+	sudo apt autoremove
+	
+Then add the path of cuda to ```~/.zshrc```
+
+	$ export PATH=/usr/local/cuda-8.0/bin${PATH:+:${PATH}}
+	
+Then install cudnn6.0, first download the library from https://developer.nvidia.com/rdp/cudnn-download, the follow the install Guide in that website. 
+
+	sudo cp cuda/include/cudnn.h /usr/local/cuda/include
+	sudo cp cuda/lib64/libcudnn* /usr/local/cuda/lib64
+	sudo chmod a+r /usr/local/cuda/include/cudnn.h /usr/local/cuda/lib64/libcudnn*
+
+Add the following lines to ```~/.zshrc```
+
+	export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64:	$LD_LIBRARY_PATH
+	export CPPFLAGS='-I/usr/local/cuda-8.0/include'
+	export LDFLAGS='-L/usr/local/cuda-8.0/lib64'
+	export LIBS='-lcudnn'
+	
+#### install keras
+
+With tensorflow installed, to install keras is very easy. In the tensorflow virtualenv, run:
+
+	pip install keras
+	
+This will automatically install keras with tensorflow backend. More instructions can be seen here: https://keras.io/#installation
+
+#### install opencv 3.3.0
+	
+The ```opencv 3.2.0``` had python3 unavailable issue when cmake, thus we install ```opencv 3.3.0```. Please follow the instruction in this link:	
+https://github.com/BVLC/caffe/wiki/OpenCV-3.3-Installation-Guide-on-Ubuntu-16.04
+
+First, create and enter a building directory
+
+	mkdir build
+	cd build/
+	
+When ```cmake```, turn on ffmpeg and declare the specific directory of python, also declare the camke install directory, see the following command:
+	
+	cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=$WORKON_HOME/tf/ -D PYTHON=$WORKON_HOME/tf/lib/python3.5 -D PYTHON_DEFAULT_EXECUTABLE=$WORKON_HOME/tf/bin/python -D PYTHON3_PACKAGES_PATH=$WORKON_HOME/tf/lib/python3.5/site-packages -D PYTHON_LIBRARY=/usr/lib/x86_64-linux-gnu/libpython3.5.so -D FORCE_VTK=ON -D WITH_TBB=ON -D WITH_V4L=ON -D WITH_QT=ON -D WITH_OPENGL=ON -D WITH_CUBLAS=ON -D WITY_FFMPEG=ON -D CUDA_NVCC_FLAGS="-D_FORCE_INLINES" -D WITH_GDAL=ON -D WITH_XINE=ON -D BUILD_EXAMPLES=ON ..
+
+Please carefully check the output of cmake, expecially the installation path and the python it uses. Also check whether ffmpeg and other modules are on.
+
+Then make:
+
+	make -j8
+	
+There can be warnings about nvcc which are save to ignore.
+	
+Then make install:
+
+	sudo make install
+	sudo /bin/bash -c 'echo "/usr/local/lib" > /etc/ld.so.conf.d/opencv.conf'
+	sudo ldconfig
+	sudo apt-get update
+	
+Finally, reboot the system.
