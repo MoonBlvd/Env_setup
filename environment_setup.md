@@ -131,6 +131,7 @@ Then one could run the following command from the terminal to import binary osm 
 	sudo apt-get update
 	sudo apt-get install python-scipy python-pandas python-matplotlib python3-tk
 	pip install seaborn
+	
 However, apt-get only installs globally, to install for virtualenv, run: 
 
 	pip install numpy
@@ -242,4 +243,15 @@ Finally, reboot the system and add the path to ```PYTHONPATH```:
 	
 If opencv is not necessary,  a very simple alternative is imageio. To install, run this cmd in the virtualenv:
 
-	pip install imageio 	
+	pip install imageio
+	
+#### Other requirements for keras
+
+	pip install h5py
+	
+ERROR:
+
+	InternalError (see above for traceback): Blas SGEMM launch failed : m=361, n=1024, k=1024
+	
+It might be memory issue, try to use cpu py adding ```CUDA_VISIBLE_DEVICE=""``` to the beginning of the python 
+cmd
