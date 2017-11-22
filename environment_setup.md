@@ -164,3 +164,21 @@ The default logrithm color map in ```branca``` is natural logrithm, we could cha
 	index = [math.exp(math.log(min_) + i * (math.log(max_) -       math.log(min_)) * 1./n ) for i in range(1+n)]
 	
 	
+#### install QGIS 2.8 in ubuntu 16.04 xenial 
+In ```/etc/apt/sources.list``` add the following:
+
+	deb     http://qgis.org/debian xenial main
+	deb-src http://qgis.org/debian xenial main
+	
+Run 
+
+	sudo apt-get update
+	sudo apt-get install qgis python-qgis qgis-plugin-grass
+	
+If there is ```NO_PUBKEY``` error,  add the missed key by:
+
+	sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys *key value*
+	
+If there is dependency issues (might happen if the old version QGIS was not romoved correctly or clearly), try ```aptitude```:
+
+	sudo aptitude install qgis python-qgis qgis-plugin-grass	
