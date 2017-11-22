@@ -54,12 +54,12 @@ Install gui:
 
 	sudo apt-get install spatialite-gui
 	
-#### install ipython
+#### install ipython and jupyter-notebook
 Install ipython in an virtualenv:	
 
 	mkvirtualenv py3 --python=python3
 	pip install ipython
-
+	pip install jupyter
 #### install PyQt5
 install the GPL version from Wheels
 
@@ -131,6 +131,7 @@ Then one could run the following command from the terminal to import binary osm 
 	sudo apt-get update
 	sudo apt-get install python-scipy python-pandas python-matplotlib python3-tk
 	pip install seaborn
+	
 However, apt-get only installs globally, to install for virtualenv, run: 
 
 	pip install numpy
@@ -182,3 +183,102 @@ If there is ```NO_PUBKEY``` error,  add the missed key by:
 If there is dependency issues (might happen if the old version QGIS was not romoved correctly or clearly), try ```aptitude```:
 
 	sudo aptitude install qgis python-qgis qgis-plugin-grass	
+#### install CUDA and Tensorflow
+First, start a virtualenv for tensorflow
+
+	mkvirtualenv --python=python3 tf
+Then follow the instruction from: https://developer.nvidia.com/cuda-80-ga2-download-archive
+**Please remember to check the nvidia driver and graphics drive version by:**
+	nvidia-smi
+**Do not install the latest CUDA-9.0 since its not supported by tensorflow yet.**
+
+	sudo dpkg -i cuda-repo-ubuntu1604-8-0-local-ga2_8.0.61-1_amd64.deb
+	sudo apt-get update
+	sudo apt-get install cuda
+	
+If you installed CUDA-9.0 or other CUDA by mistake, remove them by:
+	
+	sudo apt-get --purge remove <package_name>
+	sudo apt autoremove
+	
+Then add the path of cuda to ```~/.zshrc```
+
+	$ export PATH=/usr/local/cuda-8.0/bin${PATH:+:${PATH}}
+	
+Then install cudnn6.0, first download the library from https://developer.nvidia.com/rdp/cudnn-download, the follow the install Guide in that website. 
+
+	sudo cp cuda/include/cudnn.h /usr/local/cuda/include
+	sudo cp cuda/lib64/libcudnn* /usr/local/cuda/lib64
+	sudo chmod a+r /usr/local/cuda/include/cudnn.h /usr/local/cuda/lib64/libcudnn*
+
+Add the following lines to ```~/.zshrc```
+
+	export LD_LIBRARY_PATH=/usr/local/cuda-8.0/lib64:	$LD_LIBRARY_PATH
+	export CPPFLAGS='-I/usr/local/cuda-8.0/include'
+	export LDFLAGS='-L/usr/local/cuda-8.0/lib64'
+	export LIBS='-lcudnn'
+	
+#### install keras
+
+With tensorflow installed, to install keras is very easy. In the tensorflow virtualenv, run:
+
+	pip install keras
+	
+This will automatically install keras with tensorflow backend. More instructions can be seen here: https://keras.io/#installation
+
+*Note: if you have to use CPU instead of cpu, add ```CUDA_VISIBLE_DEVICE=""``` to the beginning of the python 
+cmd*
+
+#### install opencv 3.3.0
+	
+The ```opencv 3.2.0``` had python3 unavailable issue when cmake, thus we install ```opencv 3.3.0```. Please follow the instruction in this link:	
+https://github.com/BVLC/caffe/wiki/OpenCV-3.3-Installation-Guide-on-Ubuntu-16.04
+
+First, create and enter a building directory
+
+	mkdir build
+	cd build/
+	
+When ```cmake```, turn on ffmpeg and declare the specific directory of python, also declare the camke install directory, see the following command:
+	
+	cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=$WORKON_HOME/tf/ -D PYTHON=$WORKON_HOME/tf/lib/python3.5 -D PYTHON_DEFAULT_EXECUTABLE=$WORKON_HOME/tf/bin/python -D PYTHON3_PACKAGES_PATH=$WORKON_HOME/tf/lib/python3.5/site-packages -D PYTHON_LIBRARY=/usr/lib/x86_64-linux-gnu/libpython3.5.so -D FORCE_VTK=ON -D WITH_TBB=ON -D WITH_V4L=ON -D WITH_QT=ON -D WITH_OPENGL=ON -D WITH_CUBLAS=ON -D WITY_FFMPEG=ON -D CUDA_NVCC_FLAGS="-D_FORCE_INLINES" -D WITH_GDAL=ON -D WITH_XINE=ON -D BUILD_EXAMPLES=ON ..
+
+Please carefully check the output of cmake, expecially the installation path and the python it uses. Also check whether ffmpeg and other modules are on.
+
+Then make:
+
+	make -j8
+	
+There can be warnings about nvcc which are save to ignore.
+	
+Then make install:
+
+	sudo make install
+	sudo /bin/bash -c 'echo "/usr/local/lib" > /etc/ld.so.conf.d/opencv.conf'
+	sudo ldconfig
+	sudo apt-get update
+	
+Finally, reboot the system and add the path to ```PYTHONPATH```:
+
+	export PYTHONPATH=$WORKON_HOME/tf/lib/python3.5/dist-packages:$PYTHONPATH
+	
+If opencv is not necessary,  a very simple alternative is imageio. To install, run this cmd in the virtualenv:
+
+	pip install imageio
+	
+#### Other requirements for keras
+
+	pip install h5py
+	
+ERROR:
+	
+	E tensorflow/stream_executor/cuda/cuda_blas.cc:366] failed to create cublas handle: CUBLAS_STATUS_NOT_INITIALIZED
+	
+	InternalError (see above for traceback): Blas SGEMM launch failed : m=361, n=1024, k=1024
+	
+To fix it, add the following lines in the code where keras/tensorflow is called:
+
+	config = tf.ConfigProto()
+	config.gpu_options.allow_growth=True
+	session = tf.Session(config=config)
+	
