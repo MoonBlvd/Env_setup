@@ -282,3 +282,91 @@ To fix it, add the following lines in the code where keras/tensorflow is called:
 	config.gpu_options.allow_growth=True
 	session = tf.Session(config=config)
 	
+### Install PCL 1.8.0
+Install oracle -java8-jdk
+	
+	sudo add-apt-repository -y ppa:webupd8team/java && sudo apt update && sudo apt -y install oracle-java8-installer
+	
+Install dependencies
+
+	sudo apt -y install g++ cmake cmake-gui doxygen mpi-default-dev openmpi-bin openmpi-common libusb-1.0-0-dev libqhull* libusb-dev libgtest-dev
+	sudo apt -y install git-core freeglut3-dev pkg-config build-essential libxmu-dev libxi-dev libphonon-dev libphonon-dev phonon-backend-gstreamer
+	sudo apt -y install phonon-backend-vlc graphviz mono-complete qt-sdk libflann-dev
+	sudo apt -y install libflann1.8 libboost1.58-all-dev
+
+Install Eigen package
+
+	cd ~/Downloads
+	wget http://launchpadlibrarian.net/209530212/libeigen3-dev_3.2.5-4_all.deb
+	sudo dpkg -i libeigen3-dev_3.2.5-4_all.deb
+	sudo apt-mark hold libeigen3-dev
+ 
+Build Visualization ToolKit (VTK)
+	
+	wget http://www.vtk.org/files/release/7.1/VTK-7.1.0.tar.gz
+	tar -xf VTK-7.1.0.tar.gz
+	cd VTK-7.1.0 && mkdir build && cd build
+	cmake ..
+	make                                                                   
+	sudo make install
+	
+Build PCL 
+
+	cd ~/Downloads
+	wget https://github.com/PointCloudLibrary/pcl/archive/pcl-1.8.0.tar.gz
+	tar -xf pcl-1.8.0.tar.gz
+	cd pcl-pcl-1.8.0 && mkdir build && cd build
+	cmake ..
+	make
+	sudo make install
+	
+Remove unuseful packages
+
+	cd ~/Downloads
+	rm libeigen3-dev_3.2.5-4_all.deb VTK-7.1.0.tar.gz pcl-1.8.0.tar.gz
+	sudo rm -r VTK-7.1.0 pcl-pcl-1.8.0
+	
+
+### Convert .pcap file to .pcd file 
+open terminal, run: 
+	
+	roslaunch velodyne_pointcloud 32e_points.launch pcap:=(paht of your file) 
+
+This will produce ensor_msgs/PointCloud2 
+
+Then open new terminal, run:
+	
+	rosrun pcl_ros pointcloud_to_pcd input:=/velodyne_points _prefix:=(path to save it) 
+
+This will output .pcd file
+
+### Install ROS Lunar
+
+Configure your Ubuntu repositories to allow "restricted," "universe," and "multiverse."
+
+Setup your computer to accept software from packages.ros.org.
+
+	sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+
+Setup the key
+
+	sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116
+
+Install:
+
+	sudo apt-get update
+	sudo apt-get install ros-lunar-desktop-full
+
+Initialize
+
+	sudo rosdep init
+	rosdep update 
+
+Environment Setup
+
+	echo "source /opt/ros/lunar/setup.zsh" >> ~/.zshrc
+	source ~/.zshrc
+	
+Dependencies for buding packages
+
+	sudo apt-get install python-rosinstall python-rosinstall-generator python-wstool build-essential
