@@ -370,3 +370,8 @@ Environment Setup
 Dependencies for buding packages
 
 	sudo apt-get install python-rosinstall python-rosinstall-generator python-wstool build-essential
+	
+Above commands install ROS for default python, to run ROS in a virtualenv we need to install ```rospkg``` and ```catkin_pkg``` in that virtualenv:
+
+	pip install rospkg
+	pip install catkin_pkg	
