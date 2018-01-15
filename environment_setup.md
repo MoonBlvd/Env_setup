@@ -26,6 +26,10 @@ need to set the virtualenv wrapper directory for environment storage as follows:
 	export WORKON_HOME=~/Envs
 	source $HOME/.local/bin/virtualienvwrapper.sh
 	
+Make a virtualenv using python3:
+
+	mkvirtualenv --python=/usr/bin/python3 your-virtualenv-name
+	
 #### install Markdown editor Remarkable:
 Download the newest .deb file from website:
 
@@ -264,3 +268,13 @@ To fix it, add the following lines in the code where keras/tensorflow is called:
 	config.gpu_options.allow_growth=True
 	session = tf.Session(config=config)
 	
+	
+### Unreal Engin and CARLA
+
+run CARLA as server
+
+	./CarlaUE4.sh /Game/Maps/Town01 -carla-server -benchmark -fps=15
+	
+Run a client to communicate with the server, it's gonna start a pygame window so that the user can control the car, ```-i``` and ```-s``` indicate saving images and data:
+	
+	./manual_control.py -i -s 
