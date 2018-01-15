@@ -388,3 +388,46 @@ Above commands install ROS for default python, to run ROS in a virtualenv we nee
 
 	pip install rospkg
 	pip install catkin_pkg	
+
+###Install Caffe
+Caffe is a popular CNN framework. The original repo is ```https://github.com/BVLC/caffe```. Some Caffe developers fork the original repo and change it per their own requirement, thus sometimes one need to build other forks of Caffe instead of the BVLC version. For example, for SSD there is ```https://github.com/manutdzou/KITTI_SSD```  and for RRC there is ```https://github.com/xiaohaoChen/rrc_detection```. For this example, we use the RRC repo.
+
+First, make sure CUDA-8.0 (include cudnn) and opencv 3.3 (opencv 2.4 might be fine, but recomment 3.3) are insatlled. To properly install these two, please follow the steps in above sections. Then, clone the rrc repo to a none root directory (the make might fail if it's in a root directory):
+
+	git clone https://github.com/xiaohaoChen/rrc_detection
+	
+
+	
+Then modify the ```Makefile.config``` by 
+
+	cd rrc_detection
+	mv Makefile.config.example Makefile.config
+	vim Makefile.config
+	
+Uncomment ```OPENCV_VERSION==3``` to declare that opencv 3.3 is used. Change ```CUDA_DIR``` to the CUDA root directory. To use python3, comment the two lines for python2 and uncomment python3 lines. Change the ```PYTHON_INCLUDE``` to the python you are using, e.g, the python for the virtualenv that you are using. Uncomment ```WITH_PYTHON_LAYER := 1``` to support layers written in python. Add ```/usr/include/hdf5/serial``` to ```INCLUDE_DIRS```, add ```/usr/lib/x86_64-linux-gnu/hdf5/serial``` to ```LIBRARY_DIRS```.
+
+Then make and test Caffe:
+
+	make all -j8
+	make pycaffe
+	make test
+	make runtest
+	make distribute
+	
+If  there is the error ```cannot find -lboost_python3
+``` when make, then link the existed file to the proper name by do the following:
+
+	cd /usr/lib/x86_64-linux-gnu
+	sudo ln -s libboost_python-py35.so libboost_python3.so 
+
+If there are other errors, please contact.
+If no errors, then change the folder name from ```rrc_detection``` to ```caffe-rrc``` and move it a directory that you would to perminantly keep it. Here we suggest ```/usr/lib/caffe-rrc```
+
+Then add two lines to ```~/.zshrc``` or ```~/.bashrc```
+
+	export CAFFE_ROOT="/usr/lib/caffe-rrc"
+	export PYTHONPATH=$CAFFE_ROOT/python:$PYTHONPATH
+
+Then ```source ~/.zshrc``` or ```source ~/.bashrc```. 
+
+By building Caffe in this way, one can use caffe and all its python api using the python that added to the ```Makefile.config```.
