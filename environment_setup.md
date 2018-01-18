@@ -389,7 +389,9 @@ Above commands install ROS for default python, to run ROS in a virtualenv we nee
 	pip install rospkg
 	pip install catkin_pkg	
 
+
 ###Install Caffe
+
 Caffe is a popular CNN framework. The original repo is ```https://github.com/BVLC/caffe```. Some Caffe developers fork the original repo and change it per their own requirement, thus sometimes one need to build other forks of Caffe instead of the BVLC version. For example, for SSD there is ```https://github.com/manutdzou/KITTI_SSD```  and for RRC there is ```https://github.com/xiaohaoChen/rrc_detection```. For this example, we use the RRC repo.
 
 First, make sure CUDA-8.0 (include cudnn) and opencv 3.3 (opencv 2.4 might be fine, but recomment 3.3) are insatlled. To properly install these two, please follow the steps in above sections. Then, clone the rrc repo to a none root directory (the make might fail if it's in a root directory):
