@@ -433,3 +433,22 @@ Then add two lines to ```~/.zshrc``` or ```~/.bashrc```
 Then ```source ~/.zshrc``` or ```source ~/.bashrc```. 
 
 By building Caffe in this way, one can use caffe and all its python api using the python that added to the ```Makefile.config```.
+
+###Install Optimization Tools
+The optimization tool used here is PICOS
+
+To install PICOS, download the source from http://picos.zib.de/download.html#download, then go to the virtualenv and run ```python setup.py install```. 
+
+PICOS can use different solvers, the default one is ```cvxopt```, to run quadratic programming (QP), we need ```gurobi```.
+
+To install ```gurobi```, download from the website https://www.gurobi.com/downloads/gurobi-optimizer and run the following
+
+	python setup.py install
+
+Then add the path to the ```~/.zshrc``` or  ```~/.bashrc```
+
+	export GUROBI_HOME="/home/brianyao/Documents/gurobi702/linux64"
+	export PATH="${PATH}:${GUROBI_HOME}/bin"
+	export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${GUROBI_HOME}/lib"
+	
+Change the ```GUROBI_HOME``` to your own gurobi directory.
