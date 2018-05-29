@@ -70,7 +70,7 @@ install the GPL version from Wheels
 	pip install pyqt5
 	
 #### install Docker / run Jeremy's POSTGIS Docker 
-To install Docker, refer to: 
+To install Docker, refer to: sudo apt-get remove packagename
 https://docs.docker.com/engine/installation/linux/docker-ce/ubuntu/#install-using-the-repository
 
 To gIve authority to the account, first check the group:
@@ -186,7 +186,8 @@ If there is ```NO_PUBKEY``` error,  add the missed key by:
 	
 If there is dependency issues (might happen if the old version QGIS was not romoved correctly or clearly), try ```aptitude```:
 
-	sudo aptitude install qgis python-qgis qgis-plugin-grass	
+	sudo aptitude install qgis python-qgis qgis-plugin-grass
+		
 #### install CUDA and Tensorflow
 First, start a virtualenv for tensorflow
 
@@ -194,16 +195,18 @@ First, start a virtualenv for tensorflow
 Then follow the instruction from: https://developer.nvidia.com/cuda-80-ga2-download-archive
 **Please remember to check the nvidia driver and graphics drive version by:**
 	nvidia-smi
-**Do not install the latest CUDA-9.0 since its not supported by tensorflow yet.**
-
+~~**Do not install the latest CUDA-9.0 since its not supported by tensorflow yet.**
+~~
 	sudo dpkg -i cuda-repo-ubuntu1604-8-0-local-ga2_8.0.61-1_amd64.deb
 	sudo apt-get update
 	sudo apt-get install cuda
 	
-If you installed CUDA-9.0 or other CUDA by mistake, remove them by:
+~~If you installed CUDA-9.0 or other CUDA by mistake, remove them by:~~
 	
 	sudo apt-get --purge remove <package_name>
 	sudo apt autoremove
+	
+Tensorflow now supports CUDA-9.0 with cudnn-7.0!!!
 	
 Then add the path of cuda to ```~/.zshrc```
 
@@ -221,7 +224,21 @@ Add the following lines to ```~/.zshrc```
 	export CPPFLAGS='-I/usr/local/cuda-8.0/include'
 	export LDFLAGS='-L/usr/local/cuda-8.0/lib64'
 	export LIBS='-lcudnn'
-	
+
+Then to install tensorflow, go to the virtualenv, then run one of the following:
+
+	$ pip install tensorflow      # Python 2.7; CPU support (no GPU support)
+	$ pip3 install tensorflow     # Python 3.n; CPU support (no GPU support)
+	$ pip install tensorflow-gpu  # Python 2.7;  GPU support
+	$ pip3 install tensorflow-gpu # Python 3.n; GPU support 
+
+Run simple code to validate the installation:
+
+	import tensorflow as tf
+	hello = tf.constant('Hello, TensorFlow!')
+	sess = tf.Session()
+	print(sess.run(hello))
+
 #### install keras
 
 With tensorflow installed, to install keras is very easy. In the tensorflow virtualenv, run:
@@ -416,8 +433,7 @@ Then make and test Caffe:
 	make runtest
 	make distribute
 	
-If  there is the error ```cannot find -lboost_python3
-``` when make, then link the existed file to the proper name by do the following:
+If  there is the error ```cannot find -lboost_python3``` when make, then link the existed file to the proper name by do the following:
 
 	cd /usr/lib/x86_64-linux-gnu
 	sudo ln -s libboost_python-py35.so libboost_python3.so 
@@ -431,7 +447,7 @@ Then add two lines to ```~/.zshrc``` or ```~/.bashrc```
 	export PYTHONPATH=$CAFFE_ROOT/python:$PYTHONPATH
 
 Then ```source ~/.zshrc``` or ```source ~/.bashrc```. 
-
+sudo apt-get remove packagename
 By building Caffe in this way, one can use caffe and all its python api using the python that added to the ```Makefile.config```.
 
 ###Install Optimization Tools
