@@ -227,10 +227,10 @@ Add the following lines to ```~/.zshrc```
 
 Then to install tensorflow, go to the virtualenv, then run one of the following:
 
-	$ pip install tensorflow      # Python 2.7; CPU support (no GPU support)
-	$ pip3 install tensorflow     # Python 3.n; CPU support (no GPU support)
-	$ pip install tensorflow-gpu  # Python 2.7;  GPU support
-	$ pip3 install tensorflow-gpu # Python 3.n; GPU support 
+	pip install tensorflow      # Python 2.7; CPU support (no GPU support)
+	pip3 install tensorflow     # Python 3.n; CPU support (no GPU support)
+	pip install tensorflow-gpu  # Python 2.7;  GPU support
+	pip3 install tensorflow-gpu # Python 3.n; GPU support 
 
 Run simple code to validate the installation:
 
