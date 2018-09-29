@@ -13,9 +13,12 @@ To setup the static IP address for host PC:
 **Note that tensorrt python API doesn't support Jetson yet.**
 
 ## Install basic dependencies over the whole system
+### install opencv 3.4.0
+
+Follow this link <https://jkjung-avt.github.io/opencv3-on-tx2/>. 
 
 
-## Install Tensorflow and Keras
+### Install Tensorflow and Keras
 There are some tricks to get keras with tensorflow backend work on TX2
 
 * We installed the keras 2.2.0 on TX2, and the Mask-RCNN repo we are using shots error. Do the following to fix it:
@@ -32,5 +35,20 @@ There are some tricks to get keras with tensorflow backend work on TX2
     config.gpu_options.allow_growth = True
     set_session(tf.Session(config=config))
 
- 
+### ADD SWAP SPACE
+    
+    # Create a swapfile for Ubuntu at the current directory location
+    fallocate -l 8G swapfile
+    # List out the file
+    ls -lh swapfile
+    # Change permissions so that only root can use it
+    chmod 600 swapfile
+    # List out the file
+    ls -lh swapfile
+    # Set up the Linux swap area
+    mkswap swapfile
+    # Now start using the swapfile
+    sudo swapon swapfile
+    # Show that it's now being used
+    swapon -s
  
