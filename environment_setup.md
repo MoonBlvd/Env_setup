@@ -24,7 +24,7 @@
 need to set the virtualenv wrapper directory for environment storage as follows:
 
 	export WORKON_HOME=~/Envs
-	source $HOME/.local/bin/virtualienvwrapper.sh
+	source $HOME/.local/bin/virtualenvwrapper.sh
 	
 Make a virtualenv using python3:
 
