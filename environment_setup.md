@@ -11,6 +11,50 @@
 * Password: chsh: PAM: Authentication failure"
 * If it doesn't work, check which zsh, then type in chsh and change the directory of the default shell to the output of which zsh"	
 
+#### setup SSH key and automatic pull
+go to the workiong directory that you want automatic pull happen:
+
+    vim .git/config
+
+change the bare to be true
+
+go to .git/hooks/, create a "post-receive" file, and type in following lines:
+
+    #!/bin/bash
+    TARGET="/home/brianyao/your-working-dir"
+    GIT_DIR="/home/brianyao/your-working-dir/.git"
+BRANCH="master"
+
+    while read oldrev newrev ref
+do
+        # only checking out the master (or whatever branch you would like to deploy)
+        if [[ $ref = refs/heads/$BRANCH ]];
+        then
+                echo "Ref $ref received. Deploying ${BRANCH} branch to production..."
+                git --work-tree=$TARGET --git-dir=$GIT_DIR checkout -f
+        else
+                echo "Ref $ref received. Doing nothing: only the ${BRANCH} branch may be deployed on this server."
+        fi
+done
+
+save and run ```chmod -x post-receive``` to make it executible.
+The this repo becomes a listening repo.
+
+go to the mochine you used for coding, e.g. your desktop,go to the working directory
+
+type in:
+
+    git remote set-url --add --push origin username@xxxxx:your-working-dir/.git
+
+this add a new push target to the git repo on your local machine, which is your server.
+
+
+To avoid typing in the password of your server every time do:
+
+    ssh-copy-id -i username@xxxxxx
+
+this add the confidential of your server to your local machine.
+
 #### install pip:
 	sudo apt-get install python-pip
 *Note: pip would be broken if run:*
