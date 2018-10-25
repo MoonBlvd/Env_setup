@@ -20,22 +20,22 @@ change the bare to be true
 
 go to .git/hooks/, create a "post-receive" file, and type in following lines:
 
-    #!/bin/bash
-    TARGET="/home/brianyao/your-working-dir"
-    GIT_DIR="/home/brianyao/your-working-dir/.git"
-BRANCH="master"
+	#!/bin/bash
+	TARGET="/home/brianyao/your-working-dir"
+	GIT_DIR="/home/brianyao/your-working-dir/.git"
+	BRANCH="master"
 
-    while read oldrev newrev ref
+	while read oldrev newrev ref
 do
-        # only checking out the master (or whatever branch you would like to deploy)
-        if [[ $ref = refs/heads/$BRANCH ]];
-        then
-                echo "Ref $ref received. Deploying ${BRANCH} branch to production..."
-                git --work-tree=$TARGET --git-dir=$GIT_DIR checkout -f
-        else
-                echo "Ref $ref received. Doing nothing: only the ${BRANCH} branch may be deployed on this server."
-        fi
-done
+		# only checking out the master (or whatever branch you would like to deploy)
+		if [[ $ref = refs/heads/$BRANCH ]];
+		then
+			echo "Ref $ref received. Deploying ${BRANCH} branch to production..."
+			git --work-tree=$TARGET --git-dir=$GIT_DIR checkout -f
+		else
+			echo "Ref $ref received. Doing nothing: only the ${BRANCH} branch may be deployed on this server."
+		fi
+	done
 
 save and run ```chmod -x post-receive``` to make it executible.
 The this repo becomes a listening repo.
