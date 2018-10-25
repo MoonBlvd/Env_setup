@@ -37,7 +37,7 @@ go to .git/hooks/, create a "post-receive" file, and type in following lines:
 		fi
 	done
 
-save and run ```chmod -x post-receive``` to make it executible.
+save and run ```chmod +x post-receive``` to make it executible.
 The this repo becomes a listening repo.
 
 go to the mochine you used for coding, e.g. your desktop,go to the working directory
