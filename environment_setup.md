@@ -26,7 +26,7 @@ go to .git/hooks/, create a "post-receive" file, and type in following lines:
 	BRANCH="master"
 
 	while read oldrev newrev ref
-do
+	do
 		# only checking out the master (or whatever branch you would like to deploy)
 		if [[ $ref = refs/heads/$BRANCH ]];
 		then
