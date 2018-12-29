@@ -7,7 +7,7 @@
 	sudo apt-get install git-core
 	wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh
 	chsh -s $(which zsh)
-	sudo shutdown -r 0
+	sudo shutdown -r 0```
 * Password: chsh: PAM: Authentication failure"
 * If it doesn't work, check which zsh, then type in chsh and change the directory of the default shell to the output of which zsh"	
 
@@ -55,19 +55,20 @@ To avoid typing in the password of your server every time do:
 
 this add the confidential of your server to your local machine.
 
-#### install pip:
-	sudo apt-get install python-pip
+#### install pip3:
+	sudo apt-get install python3-pip
 *Note: pip would be broken if run:*
 
-	pip install --upgrate pip
+	pip3 install --upgrate pip3
      
 #### installl virtualenv:
-	pip install virtualenv
-	pip install virtualenvwrapper
+	pip3 install virtualenv
+	pip3 install virtualenvwrapper
 	
 need to set the virtualenv wrapper directory for environment storage as follows:
 
 	export WORKON_HOME=~/Envs
+	export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
 	source $HOME/.local/bin/virtualenvwrapper.sh
 	
 Make a virtualenv using python3:
