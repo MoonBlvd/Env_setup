@@ -270,6 +270,10 @@ Add the following lines to ```~/.zshrc```
 	export LDFLAGS='-L/usr/local/cuda-8.0/lib64'
 	export LIBS='-lcudnn'
 
+NEW (Dec 29 2018): To install CUDA-10, use nvidia driver >= 410.79(!!) and build tensorflow/pytorch from source(!!)
+ 
+
+
 Then to install tensorflow, go to the virtualenv, then run one of the following:
 
 	pip install tensorflow      # Python 2.7; CPU support (no GPU support)
